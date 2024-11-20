@@ -106,11 +106,12 @@ Room:23
 
 Room:24
  west,23
- down,25
+ up,25
 
 Room:25
  up,4
  west,26
+ down,24
 
 Room:26
  east,25
