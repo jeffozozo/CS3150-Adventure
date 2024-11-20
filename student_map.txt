@@ -8,7 +8,7 @@ Room:1 - Hector Adame
 Room:2 - Broxton Alexander
  up,1
  south,3
- west,18
+ down,18
 
 Room:3 - Zak Breitenstein
  north,2
@@ -39,18 +39,19 @@ Room:8 - Sebastian Hernandez
 
 Room:9 - Kyleigh Hill
  east,8
- south,10
+ west,10
 
 Room:10 - Brock Houston
  north,11
+ east,9
 
-Room:11 - Paysen Hudson
- south,23
+Room:11 - Jeff Compas
+ south,10
  west,22
  down,17
+ up,23
 
 Room:12 - Thomas Jensen
- east,11
  west,13
  down,3
 
@@ -61,12 +62,10 @@ Room:13 - David Molina Gerboles
 Room:14 - Lincoln Nordquist
  up,13
  west,15
- south,17
 
 Room:15 - Aolani Oaks
  east,14
  west,16
- north,11
 
 Room:16 - Marco Raro Moreno
  east,15
@@ -78,7 +77,7 @@ Room:17 - Carson Richards
  up,11
 
 Room:18 - Omar Rodriguez
- east,2
+ up,2
  north,19
 
 Room:19 - Tyler Rogel
@@ -101,16 +100,17 @@ Room:22 - Carson Sickler
  east,11
 
 Room:23 - Jordan Snow
- north,11
+ down,11
  east,24
 
 Room:24 - Julia Souza Silvestrin
  west,23
- down,25
+ up,25
 
 Room:25 - Cutler Thomas
  up,4
  west,26
+ down,24
 
 Room:26 - Kassidy Wall
  east,25
