@@ -13,10 +13,10 @@ class Lamp(Object):
         # the lamp toggles when you 'use' it. 
         if self.state == "off":
             self.state = "on"
-            print(f"{self.name} is now on.")
+            print(f"The lamp is now on.")
         else:
             self.state = "off"
-            print(f"{self.name} is now off.")
+            print(f"The lamp is now is now off.")
             ("lamp", "A plain, but worn lamp, filled with fragrant oil.", True, "off", True)
 
 
@@ -64,6 +64,9 @@ class Room:
                 if(next != None):
                     return next
             
+            elif command_base == "use":
+                self.use(other_part,player)
+
             elif command_base == "look":
                 self.look(other_part, player)
 
@@ -115,49 +118,70 @@ class Room:
 
         if target == "well":
             print("Upon closer inspection, the liquid is not water -- it's pure magic. It seems the well may be a portal to somewhere.")
-        else:
-            # Check if the object is in the room or in the player's inventory and print it description and status. You can use this code exactly.
-            for obj in self.objects + player.inventory:
-                if target == obj.name:
-                    print(obj.description) 
-                    if(obj.state != None): 
-                        print(f"The {obj.name} is {obj.state}")                   
-                    return
+            return
         
+        # Check if the object is in the room or in the player's inventory and print it description and status. You can use this code exactly.
+        item = self.get_item_from_inventory(target,player)
+        if(item == None):
+            item = self.get_item_from_object_list(target)
+
+        if target == item.name.lower().strip():
+            print(item.description) 
+            if(item.state != None): 
+                print(f"The {item.name} is {item.state}")                   
+            return
+            
+            print("looking at", target, "reveals nothing.")
+            return
+    
+    # you can use this as well. haha get it? use this...
+    def use(self, item_name, player):
+        item = self.get_item_from_inventory(item_name,player)
+        if(item == None):
+            item = self.get_item_from_object_list(item_name)
+        
+        #this room only allows you to use the objects in the list or inventory. That is not a global constraint however and you can add whatever use functions you like.
+        if(item == None):
+            print("you can't use that.")
+            return
+        
+        item.use()
+        
+
     # this code could also probably be used verbatim
     def get(self, item_name, player):
-        # Check if the item is in the room's objects list
-        for obj in self.objects:
-            if obj.name.lower() == item_name.lower():  # Case-insensitive comparison
-                if not obj.can_be_gotten:
-                    print(f"The {obj.name} cannot be taken.")
-                    return
 
-                # Check if the player already has the item in their inventory
-                if player.has_item(obj.name):
-                    print(f"You already have the {obj.name}.")
-                    return
+        # Check if the player already has the item in their inventory
+        if player.has_item(item_name):
+            print(f"You already have the {item_name}.")
+            return
+        
+        item = self.get_item_from_object_list(item_name)
+        if(item == None):
+            print(f"{item_name} is not here.")
+            return
+        
+        if not item.can_be_gotten:
+            print(f"The {item.name} cannot be taken.")
+            return
 
-                # Add the object to the player's inventory and remove it from the room
-                player.inventory.append(obj)
-                self.objects.remove(obj)
-                print(f"You take the {obj.name} and add it to your inventory.")
-                return
-
-        # If the item was not found in the room
-        print(f"There is no {item_name} here or you can't get it.")
+        # Add the object to the player's inventory and remove it from the room
+        player.inventory.append(item)
+        self.objects.remove(item)
+        print(f"You take the {item.name} and add it to your inventory.")
+        return
     
-        def drop(self, item_name, player):
-            # Check if the item is in the player's inventory
-            for item in player.inventory:
-                if item.name.lower() == item_name.lower():  # Case-insensitive comparison
-                    player.inventory.remove(item)
-                    self.objects.append(item)
-                    print(f"You drop the {item.name} on the ground.")
-                    return 
-
-            # If the item was not found in the player's inventory
-            print(f"You can't drop {item_name}. You don't have that.")
+    def drop(self, item_name, player):
+        item = self.item_in_inventory(item_name,player)
+        if(item == None):
+            print(f"You don't have the {item_name}.")
+            return
+        
+        # remove the item from the inventory and put it in the object list
+        player.inventory.remove(item)
+        self.objects.append(item)
+        print(f"You drop the {item.name}.")
+        return 
 
     def show_inventory(self, player):
         player.show_inventory()
@@ -178,3 +202,16 @@ class Room:
 
     def unknown_command(self):
         print("You can't do that here. Try something else or type 'help' for options or 'hint' for a clue.")
+
+    def get_item_from_inventory(self, item_name, player):
+        for item in player.inventory:
+            if item.name.lower() == item_name.lower():  
+                return item
+        return None    
+    
+    def get_item_from_object_list(self, item_name):
+        for item in self.objects:
+            if item.name.lower() == item_name.lower():
+                return item
+        return None
+    
