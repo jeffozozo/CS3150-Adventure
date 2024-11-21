@@ -83,7 +83,9 @@ class Room:
                 self.show_stats(player)
 
             elif command_base == "quit":
-                self.quit_game(player)
+                if(self.quit_game(player) == "quit"):
+                    return "quit"
+                
 
             elif command_base in ["help", "?"]:
                 self.show_help()
@@ -92,9 +94,6 @@ class Room:
                 self.show_hint()
             else:
                 self.unknown_command()
-
-
-
 
     # Helper functions
     def describe_room(self):
@@ -172,7 +171,7 @@ class Room:
         return
     
     def drop(self, item_name, player):
-        item = self.item_in_inventory(item_name,player)
+        item = self.get_item_from_inventory(item_name,player)
         if(item == None):
             print(f"You don't have the {item_name}.")
             return
@@ -192,7 +191,7 @@ class Room:
     def quit_game(self, player):
         if input("Are you sure you want to quit? (yes/no) ").lower().startswith('y'):
             print(f"Final Score: {player.score}")
-            sys.exit(0)
+            return "quit"
 
     def show_help(self):
         print("Available commands: move, go, look, get, take, drop, inventory, stats, quit, help")
