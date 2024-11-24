@@ -4,7 +4,8 @@ class Player:
     def __init__(self, name, health, condition, current_room):
         self.name = name
         self.health = health
-        self.condition = condition
+        self.condition = []
+        self.condition.append(condition)
         self.inventory = []  # List of Object instances
         self.current_room = current_room
         self.score = 0
@@ -29,7 +30,7 @@ class Player:
     def print_stats(self):
         print(f"{self.name}")
         print(f"Health: {self.health}")
-        print(f"Condition: {self.condition}")
+        print("Condition: ",self.condition) 
         print(f"Current Room: {self.current_room}")
         print(f"Score: {self.score}")
 

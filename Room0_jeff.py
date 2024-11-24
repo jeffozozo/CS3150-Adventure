@@ -5,6 +5,9 @@ import sys  # For exiting the game
 
 # this is how you create a new object. You inherit from class Object and override the 'use' function. 
 class Lamp(Object):
+
+    m_player 
+
     def __init__(self, name, description, can_be_gotten, state, visible):
         # Call the superclass constructor
         super().__init__(name, description, can_be_gotten, state, visible)
